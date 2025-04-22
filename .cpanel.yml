@@ -5,13 +5,21 @@ deployment:
     - nvm install 16
     - nvm use 16
     - export DEPLOYPATH=/home/naviyan2/public_html/instatrack
+    - echo "Deploying to: $DEPLOYPATH"
     - rm -rf $DEPLOYPATH/* 2>/dev/null || true
     - mkdir -p $DEPLOYPATH
-    - /bin/cp -r * $DEPLOYPATH/
+    - echo "Copying files to $DEPLOYPATH"
+    - /bin/cp -r ./* $DEPLOYPATH/
     - /bin/cp -r .env* $DEPLOYPATH/ 2>/dev/null || true
     - cd $DEPLOYPATH
+    - echo "Installing dependencies"
     - npm install --production
+    - echo "Building application"
     - NODE_ENV=production npm run build
+    - echo "Creating PM2 config"
     - echo "{\"apps\": [{\"name\": \"instatrack\", \"script\": \"server.js\", \"env\": {\"NODE_ENV\": \"production\", \"PORT\": 3000}}]}" > $DEPLOYPATH/ecosystem.config.js
+    - echo "Starting PM2"
     - pm2 delete instatrack || true
     - pm2 start ecosystem.config.js
+    - pm2 save
+    - echo "Deployment completed"
