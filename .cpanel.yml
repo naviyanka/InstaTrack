@@ -2,8 +2,8 @@
 deployment:
   tasks:
     - source ~/.nvm/nvm.sh
-    - nvm install 16
-    - nvm use 16
+    - nvm install 16.20.2
+    - nvm use 16.20.2
     - export DEPLOYPATH=/home/naviyan2/public_html/instatrack
     - export NODE_OPTIONS='--max-old-space-size=2048'
     - echo "Deploying to: $DEPLOYPATH"
