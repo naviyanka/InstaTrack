@@ -6,12 +6,11 @@ deployment:
     - nvm use 18
     - export DEPLOYPATH=/home/naviyan2/public_html/instatrack
     - mkdir -p $DEPLOYPATH
+    - /bin/cp -r * $DEPLOYPATH/
     - /bin/cp -r .next $DEPLOYPATH/
-    - /bin/cp -r public $DEPLOYPATH/
-    - /bin/cp -r package.json $DEPLOYPATH/
-    - /bin/cp -r package-lock.json $DEPLOYPATH/
-    - /bin/cp -r server.js $DEPLOYPATH/
+    - /bin/cp -r .env* $DEPLOYPATH/ 2>/dev/null || true
     - cd $DEPLOYPATH
     - npm install --production
     - NODE_ENV=production npm run build
-    - pm2 restart all || pm2 start server.js --name "instatrack"
+    - pm2 delete instatrack || true
+    - pm2 start server.js --name "instatrack" --env production
