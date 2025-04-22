@@ -2,15 +2,16 @@
 deployment:
   tasks:
     - source ~/.nvm/nvm.sh
-    - nvm install 18
-    - nvm use 18
+    - nvm install 16
+    - nvm use 16
     - export DEPLOYPATH=/home/naviyan2/public_html/instatrack
     - rm -rf $DEPLOYPATH/* 2>/dev/null || true
-    - mkdir -p $DEPLOYPATH/app
-    - /bin/cp -r * $DEPLOYPATH/app/
-    - /bin/cp -r .env* $DEPLOYPATH/app/ 2>/dev/null || true
-    - /bin/cp server.js $DEPLOYPATH/
-    - cd $DEPLOYPATH/app
-    - npm install --production
+    - mkdir -p $DEPLOYPATH
+    - /bin/cp -r * $DEPLOYPATH/
+    - /bin/cp -r .env* $DEPLOYPATH/ 2>/dev/null || true
     - cd $DEPLOYPATH
-    - echo "{\"app\": \"instatrack\", \"script\": \"server.js\", \"env\": {\"NODE_ENV\": \"production\", \"PORT\": 3000, \"NODE_OPTIONS\": \"--max-old-space-size=4096\"}}" > $DEPLOYPATH/ecosystem.config.js
+    - npm install --production
+    - NODE_ENV=production npm run build
+    - echo "{\"apps\": [{\"name\": \"instatrack\", \"script\": \"server.js\", \"env\": {\"NODE_ENV\": \"production\", \"PORT\": 3000}}]}" > $DEPLOYPATH/ecosystem.config.js
+    - pm2 delete instatrack || true
+    - pm2 start ecosystem.config.js
