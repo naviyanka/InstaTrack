@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/naviyan2/public_html/instatrack
+    - export DEPLOYPATH=/home/naviyan2/public_html
     - /bin/cp -r * $DEPLOYPATH/
     - cd $DEPLOYPATH
     - npm install
