@@ -5,4 +5,10 @@ deployment:
     - npm run build
     - export DEPLOYPATH=/home/naviyan2/public_html
     - /bin/rm -rf $DEPLOYPATH/*
-    - /bin/cp -r build/* $DEPLOYPATH/
+    - /bin/cp -r .next $DEPLOYPATH/
+    - /bin/cp -r public $DEPLOYPATH/
+    - /bin/cp -r package.json $DEPLOYPATH/
+    - /bin/cp -r package-lock.json $DEPLOYPATH/
+    - cd $DEPLOYPATH
+    - npm install --production
+    - npm start
