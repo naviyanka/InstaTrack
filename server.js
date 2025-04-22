@@ -4,6 +4,8 @@ const next = require('next');
 const path = require('path');
 
 const dev = process.env.NODE_ENV !== 'production';
+const port = process.env.PORT || 3000;
+
 const app = next({ 
   dev,
   dir: path.join(__dirname, 'app')
@@ -14,8 +16,8 @@ app.prepare().then(() => {
   createServer((req, res) => {
     const parsedUrl = parse(req.url, true);
     handle(req, res, parsedUrl);
-  }).listen(process.env.PORT || 3000, (err) => {
+  }).listen(port, (err) => {
     if (err) throw err;
-    console.log('> Ready on http://localhost:3000');
+    console.log(`> Ready on http://localhost:${port}`);
   });
 }); 

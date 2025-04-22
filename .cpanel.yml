@@ -17,3 +17,4 @@ deployment:
     - cd $DEPLOYPATH
     - pm2 delete instatrack || true
     - pm2 start server.js --name "instatrack" --env production
+    - echo "{\"app\": \"instatrack\", \"script\": \"server.js\", \"env\": {\"NODE_ENV\": \"production\", \"PORT\": 3000}}" > $DEPLOYPATH/ecosystem.config.js
