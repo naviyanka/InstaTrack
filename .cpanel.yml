@@ -1,8 +1,9 @@
 ---
 deployment:
   tasks:
-    - npm install
-    - npm run build
+    - source ~/.nvm/nvm.sh
+    - nvm install 18
+    - nvm use 18
     - export DEPLOYPATH=/home/naviyan2/public_html/instatrack
     - mkdir -p $DEPLOYPATH
     - /bin/cp -r .next $DEPLOYPATH/
@@ -12,4 +13,5 @@ deployment:
     - /bin/cp -r server.js $DEPLOYPATH/
     - cd $DEPLOYPATH
     - npm install --production
-    - npm start
+    - NODE_ENV=production npm run build
+    - pm2 restart all || pm2 start server.js --name "instatrack"
