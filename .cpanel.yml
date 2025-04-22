@@ -5,6 +5,7 @@ deployment:
     - nvm install 16
     - nvm use 16
     - export DEPLOYPATH=/home/naviyan2/public_html/instatrack
+    - export NODE_OPTIONS='--max-old-space-size=2048'
     - echo "Deploying to: $DEPLOYPATH"
     - rm -rf $DEPLOYPATH/* 2>/dev/null || true
     - mkdir -p $DEPLOYPATH
@@ -13,11 +14,11 @@ deployment:
     - /bin/cp -r .env* $DEPLOYPATH/ 2>/dev/null || true
     - cd $DEPLOYPATH
     - echo "Installing dependencies"
-    - npm install --production
+    - npm install --production --no-optional
     - echo "Building application"
-    - NODE_ENV=production npm run build
+    - NODE_ENV=production NODE_OPTIONS='--max-old-space-size=2048' npm run build
     - echo "Creating PM2 config"
-    - echo "{\"apps\": [{\"name\": \"instatrack\", \"script\": \"server.js\", \"env\": {\"NODE_ENV\": \"production\", \"PORT\": 3000}}]}" > $DEPLOYPATH/ecosystem.config.js
+    - echo "{\"apps\": [{\"name\": \"instatrack\", \"script\": \"server.js\", \"env\": {\"NODE_ENV\": \"production\", \"PORT\": 3000, \"NODE_OPTIONS\": \"--max-old-space-size=2048\"}}]}" > $DEPLOYPATH/ecosystem.config.js
     - echo "Starting PM2"
     - pm2 delete instatrack || true
     - pm2 start ecosystem.config.js

@@ -2,13 +2,16 @@ const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
 
+// Set memory limit
+process.env.NODE_OPTIONS = process.env.NODE_OPTIONS || '--max-old-space-size=2048';
+
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
 
 const app = next({ 
   dev,
   conf: {
-    // Optimize for Node.js v16
+    // Optimize for memory usage
     webpack: (config, { isServer }) => {
       if (!isServer) {
         config.optimization.splitChunks.cacheGroups = {
@@ -19,6 +22,9 @@ const app = next({
             chunks: 'all',
           },
         };
+        // Reduce memory usage during build
+        config.optimization.minimize = true;
+        config.optimization.usedExports = true;
       }
       return config;
     },
